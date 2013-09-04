@@ -11,8 +11,11 @@ var swig = require('swig');
 var cons = require('consolidate');
 var request = require('request');
 
+var cheerio = require('cheerio');
 
-var wsUrl = 'http://www.example.com/webservices/tempconvert.asmx';
+
+
+var wsUrl = 'http://www.w3schools.com/webservices/tempconvert.asmx';
 
 var soapUse = function soapPost2(fToC, cb) {
 
@@ -35,25 +38,8 @@ var soapUse = function soapPost2(fToC, cb) {
             if (response.statusCode === 201) {
                 console.log('Status Update');
             } else {
-                console.log('error: ' + response.statusCode);
-                console.log(body);
-                console.log(body[3]);
-                var d= ('<'+fToC.conversion+'Result>');
-                var c= ('</'+fToC.conversion+'Result>');
-                var indice = (body.indexOf(d) + 27);
-                console.log(indice);
-                var final = body.indexOf(c);
-                console.log(final);
-                var pos = final - indice;
-                console.log(pos);
-                var temp = '';
-                for (var i = indice; i < (indice + pos); i++) {
-
-                    temp += body[i];
-
-                }
-                console.log(temp);
-
+                var $ = cheerio.load(body, {xmlMode: true});
+                var temp = $(fToC.conversion+'Result').text();
                 cb(null, temp);
             }
         });
