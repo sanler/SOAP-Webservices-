@@ -1,0 +1,95 @@
+{% extends 'index.html' %}
+
+{% block title %}My Page{% endblock %}
+
+{% block head %}
+
+<link rel="stylesheet" href="/stylesheets/style.css">
+<script src='/socket.io/socket.io.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.js'></script>
+
+{% parent %}
+{% endblock %}
+
+{% block content %}
+
+<p>TEMPERATURE</p>
+<p> <input type="text" id="mensajes" maxlength="20" size="20"> </p>
+
+<div id='imp'></div>
+
+<div id='imp2'></div>
+
+
+<form name=foption>
+    <input type="Radio" id="option1" name="opt" value="ctf" checked> CELSIUS TO FARENHEIT
+    <br>
+    <input type="Radio" id="option2" name="opt" value="ftc"> FARENHEIT TO CELSIUS
+    <br>
+</form>
+
+<div class="onoffswitch">
+    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+    <label class="onoffswitch-label" for="myonoffswitch">
+        <div class="onoffswitch-inner"></div>
+        <div class="onoffswitch-switch"></div>
+    </label>
+</div>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        var socket = io.connect();
+
+        socket.on('connected', function (data) {
+
+            console.log(data.msg);
+        });
+
+        $('#mensajes').bind('keyup', function (e) {
+            var key = e.keyCode || e.which;
+            if (key === 13) {
+
+                console.log("HOLAAAAAAA");
+
+                if($("#option1").is(':checked')) {
+                   // alert("Está activado EL 1");
+                    socket.emit('message',{'msg': $('#mensajes').val()});
+
+                    $('#mensajes').val('').focus();
+
+                } else {
+
+                   // alert("Está activado EL 2");
+                    socket.emit('message2',{'msg': $('#mensajes').val()});
+
+                    $('#mensajes').val('').focus();
+                }
+
+            }
+        });
+
+        socket.on('temperatura', function (data) {
+
+            console.log(data);
+            $('#imp').html('<b>'+data+'</b>');
+        });
+
+        socket.on('temperatura2', function (data) {
+
+            console.log(data);
+            $('#imp').html('<b>'+data+'</b>');
+        });
+
+
+    });
+
+
+</script>
+
+
+{% endblock %}
+
+
