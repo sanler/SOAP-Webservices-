@@ -11,8 +11,11 @@ var swig = require('swig');
 var cons = require('consolidate');
 var request = require('request');
 
+var xpath = require('xpath')
+  , dom = require('xmldom').DOMParser;
 
-var wsUrl = 'http://www.example.com/webservices/tempconvert.asmx';
+
+var wsUrl = 'http://www.w3schools.com/webservices/tempconvert.asmx';
 
 var soapUse = function soapPost2(fToC, cb) {
 
@@ -35,26 +38,14 @@ var soapUse = function soapPost2(fToC, cb) {
             if (response.statusCode === 201) {
                 console.log('Status Update');
             } else {
-                console.log('error: ' + response.statusCode);
-                console.log(body);
-                console.log(body[3]);
-                var d= ('<'+fToC.conversion+'Result>');
-                var c= ('</'+fToC.conversion+'Result>');
-                var indice = (body.indexOf(d) + 27);
-                console.log(indice);
-                var final = body.indexOf(c);
-                console.log(final);
-                var pos = final - indice;
-                console.log(pos);
-                var temp = '';
-                for (var i = indice; i < (indice + pos); i++) {
-
-                    temp += body[i];
-
+                var doc = new dom().parseFromString(body);
+                var result = xpath.select('//' + fToC.conversion+'Result/text()', doc);
+                if(result.length == 1) {
+                  cb(null, result[0].data);
+                } else {
+                  cb('Temp Error');
                 }
-                console.log(temp);
 
-                cb(null, temp);
             }
         });
 
