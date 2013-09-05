@@ -26,15 +26,20 @@
     <br>
     <input type="Radio" id="option2" name="opt" value="ftc"> FARENHEIT TO CELSIUS
     <br>
+    <div style="width:50px; float: left">
+        <div class="onoffswitch">
+            <input type="checkbox" name="dual-switch-color" id="dual-switch-color" class="onoffswitch-checkbox">
+            <label class="onoffswitch-label" for="dual-switch-color">
+                <div class="onoffswitch-inner"></div>
+                <div class="onoffswitch-switch"></div>
+            </label>
+        </div>
+    </div>
 </form>
 
-<div class="onoffswitch">
-    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
-    <label class="onoffswitch-label" for="myonoffswitch">
-        <div class="onoffswitch-inner"></div>
-        <div class="onoffswitch-switch"></div>
-    </label>
-</div>
+
+
+
 
 <script type="text/javascript">
 
@@ -46,6 +51,14 @@
         socket.on('connected', function (data) {
 
             console.log(data.msg);
+        });
+
+        $('#dual-switch-color').change(function(){
+            if($(this).is(':checked')) {
+                alert('Hola');
+            } else {
+                alert('Adios');
+            }
         });
 
         $('#mensajes').bind('keyup', function (e) {
