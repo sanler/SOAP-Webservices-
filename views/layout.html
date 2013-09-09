@@ -22,19 +22,31 @@
 
 
 <form name=foption>
+    <div style="visibility: hidden; ">
     <input type="Radio" id="option1" name="opt" value="ctf" checked> CELSIUS TO FARENHEIT
     <br>
     <input type="Radio" id="option2" name="opt" value="ftc"> FARENHEIT TO CELSIUS
     <br>
+    </div>
+
+    <div style="float:left">CELSIUS TO FARENHEIT</div>
+    <div style="width:50px; float: left">
+
+        <div class="onoffswitch">
+            <input type="checkbox" name="dual-switch-color" id="dual-switch-color" class="onoffswitch-checkbox">
+            <label class="onoffswitch-label" for="dual-switch-color">
+                <div class="onoffswitch-inner"></div>
+                <div class="onoffswitch-switch"></div>
+            </label>
+        </div>
+
+    </div>
+    <div>FARENHEIT TO CELSIUS</div>
 </form>
 
-<div class="onoffswitch">
-    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
-    <label class="onoffswitch-label" for="myonoffswitch">
-        <div class="onoffswitch-inner"></div>
-        <div class="onoffswitch-switch"></div>
-    </label>
-</div>
+
+
+
 
 <script type="text/javascript">
 
@@ -46,6 +58,14 @@
         socket.on('connected', function (data) {
 
             console.log(data.msg);
+        });
+
+        $('#dual-switch-color').change(function(){
+            if($(this).is(':checked')) {
+                $("#option1").prop("checked", true)
+            } else {
+                $("#option2").prop("checked", true)
+            }
         });
 
         $('#mensajes').bind('keyup', function (e) {
